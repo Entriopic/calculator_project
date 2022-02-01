@@ -1,5 +1,6 @@
 let display = document.querySelector('#display');
 let clear = document.querySelector('#clear');
+let deleteBtn = document.querySelector('#delete');
 let buttons = document.querySelectorAll('.nums-ops');
 let equals = document.querySelector('#equals');
 let operators = document.querySelectorAll('.operators');
@@ -22,6 +23,7 @@ function divide(x, y) {
    return x / y;
 }
 
+
 // operate function
 let operate = function(x, y, operator) {
      switch(operator) {
@@ -43,6 +45,8 @@ let operate = function(x, y, operator) {
 let firstNum = null;
 let secondNum = null;
 let result = null;
+let hasDecimal = false;
+
 
 //each click on button displays a number on the display
 buttons.forEach(button => {
@@ -50,6 +54,7 @@ buttons.forEach(button => {
      display.innerText += e.currentTarget.textContent;
    })
 })
+
 
 //update firstNum variable when operator is clicked
 operators.forEach(operator => {
@@ -67,22 +72,39 @@ operators.forEach(operator => {
    })
 });
 
+
 //clear button, restoring variables to 0
-clear.addEventListener('click', function() {
+function clearAll() {
    display.innerText = "";
    firstNum = null;
    secondNum = null;
    result = null;
+}
+
+clear.addEventListener('click', function() {
+   clearAll();
+})
+
+deleteBtn.addEventListener('click', function() {
+   display.innerText = display.innerText.toString().slice(0, -1);
 })
 
 //when equals sign gets pressed it stores the value of display to secondNum variable
 equals.addEventListener('click', function() {
+   if(firstNum || secondNum === "Infinity") {
+      clearAll();
+   } else {
    secondNum = display.innerText;
    operateResult();
    display.innerText = result.toFixed(2);
    firstNum = null;
    secondNum = null;
+}
 });
+
+/*    if(firstNum || secondNum === "Infinity") {
+      clearAll();
+   } */
 
 //function for calculation
 function operateResult() {
@@ -96,6 +118,7 @@ function operateResult() {
       result = operate(parseFloat(firstNum), parseFloat(secondNum), "/");
    }
 }
+
 
 
 
